@@ -1,7 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FinalComponent } from './components/final/final.component';
+import { HomeComponent } from './components/home/home.component';
+import { ReglamentoComponent } from './components/reglamento/reglamento.component';
+import { TiradaUnoComponent } from './components/rondas/tirada-uno/tirada-uno.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path: '',redirectTo:'home', pathMatch:'full'},
+  {path: 'home', component:HomeComponent},
+  {path: 'jugar', component:TiradaUnoComponent},
+  {path: 'resultado', component:FinalComponent},
+  {path: 'reglamento', component:ReglamentoComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

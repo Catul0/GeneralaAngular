@@ -3,10 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './components/home/home.component';
+import { TiradaUnoComponent } from './components/rondas/tirada-uno/tirada-uno.component';
+import { FinalComponent } from './components/final/final.component';
+import { ReglamentoComponent } from './components/reglamento/reglamento.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    TiradaUnoComponent,
+    FinalComponent,
+    ReglamentoComponent
   ],
   imports: [
     BrowserModule,
