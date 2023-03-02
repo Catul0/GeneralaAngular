@@ -7,6 +7,7 @@ import { HomeComponent } from './components/home/home.component';
 import { TiradaUnoComponent } from './components/rondas/tirada-uno/tirada-uno.component';
 import { FinalComponent } from './components/final/final.component';
 import { ReglamentoComponent } from './components/reglamento/reglamento.component';
+import { JvjComponent } from './components/jvj/jvj.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ReglamentoComponent } from './components/reglamento/reglamento.componen
     HomeComponent,
     TiradaUnoComponent,
     FinalComponent,
-    ReglamentoComponent
+    ReglamentoComponent,
+    JvjComponent
   ],
   imports: [
     BrowserModule,
