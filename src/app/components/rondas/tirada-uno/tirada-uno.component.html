@@ -13,7 +13,7 @@
                             <img style='height: 40px; width: 40px;' src="{{obtenerImg(dado)}}" alt="">
                         </div>
                     </div>
-                </div>
+                </div> 
                 <button (click)="desplegarCambio()" *ngIf="dados[0] && contadorTiradas<11" class="btn btn-block">Cambiar Dados:
                     {{repeticiones}}</button>
                 <div class="card card-body" *ngIf="dados[0] && (repeticiones==2 || repeticiones==1) && mostrarCambiar  "
@@ -79,8 +79,5 @@
             </div>
 
         </div>
-
-
-
-
     </div>
+</div>

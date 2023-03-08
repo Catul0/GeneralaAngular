@@ -1,1 +1,171 @@
-<p>jvj works!</p>
+<div *ngIf="!FINAL" style='width: 100%;min-height: 140vh; position: absolute;  background: linear-gradient(to top, #1f4037, #99f2c8);'>
+    <form *ngIf="!mostrarJugar && !arrojarDados" class="add-form" style="width: 80%; padding-top:100px; margin: auto;"
+        (ngSubmit)="continuar()">
+        <div class="form-control" style="background: none; border:none; width: 100%; ">
+            <h2>Seleccionen el nombre de los jugadores</h2>
+            <div style=" background: linear-gradient(to right, #2193b0, #6dd5ed);">
+                <label for="nombreUno">Nombre del Jugador Uno</label>
+                <input type="text" class="form-control" name="nombreUno" id="nombreUno" [(ngModel)]="nombreUno"
+                    required>
+            </div>
+            <div style=" background: linear-gradient(to right, #f12711, #f5af19);">
+                <label for="nombreUno">Nombre del Jugador Dos</label>
+                <input type="text" class="form-control" name="nombreDos" id="nombreDos" [(ngModel)]="nombreDos"
+                    required>
+            </div>
+        </div>
+        <input type="submit" style="width: 98%; margin:auto;" value="Continuar" class="btn btn-block">
+    </form>
+    <div *ngIf="arrojarDados" style="padding-top:100px; margin: auto;" class="container text-center">
+        <div class="row">
+            <h2 *ngIf="botonArrojarInicio">Tirar dados para ver quien comienza</h2>
+            <div style=" background: linear-gradient(to right, #2193b0, #6dd5ed);" class="col">
+                <p>Dado de {{nombreUno}}</p>
+                <img style='height: 40px; width: 40px;' src="{{obtenerImg(dado1)}}" alt="">
+            </div>
+            <div class="col">
+                <button *ngIf="botonArrojarInicio" class="btn btn-block" (click)="dadosInicio()"
+                    style="margin-top: 10px;">ARROJAR</button>
+                <h5 *ngIf="!botonArrojarInicio &&(dado1>dado2)">Comienza {{nombreUno}}</h5>
+                <h5 *ngIf="!botonArrojarInicio &&(dado1<dado2)">Comienza {{nombreDos}}</h5>
+                <button *ngIf="!botonArrojarInicio" class="btn btn-block" (click)="iniciar()"
+                    style="margin-top: 10px;">INICIAR</button>
+            </div>
+            <div style=" background: linear-gradient(to right, #f12711, #f5af19);" class="col">
+                <p>Dado de {{nombreDos}}</p>
+                <img style='height: 40px; width: 40px;' src="{{obtenerImg(dado2)}}" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="mostrarJugar" class="container p-4" style="background: none;">
+        <h2 *ngIf="contadorRondas<11">RONDA {{contadorRondas}}</h2>
+
+        <!--ACA ESTA TODO LO DEL TURNO DEL JUGADOR 1-->
+        <div class="row">
+            <div *ngIf="(orden1==1 && contadorTiradas%2==1) || (orden1==2 && contadorTiradas%2==0)" class="col">
+                <h2 *ngIf="contadorRondas<11">TURNO {{nombreUno}}</h2>
+                <button class="btn btn-block" *ngIf="mostrarTirar && contadorRondas<11" (click)="tirarDadosUno()">TIRAR
+                    DADOS</button>
+                <div class="card card-body" *ngIf="dadosJugadorUno[0] && contadorRondas<11"
+                    style="background: linear-gradient(to right, #2193b0, #6dd5ed); padding-top: 0;">
+                    <h2>Sus Dados</h2>
+                    <div class="row">
+                        <div *ngFor="let dado of dadosJugadorUno" class="col" style="margin-left: 0; padding: 0;">
+                            <img style='height: 40px; width: 40px;' src="{{obtenerImg(dado)}}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <button (click)="desplegarCambio()" *ngIf="dadosJugadorUno[0] && contadorRondas<11"
+                    class="btn btn-block">Cambiar Dados:
+                    {{repeticiones}}</button>
+                <div class="card card-body"
+                    *ngIf="dadosJugadorUno[0] && (repeticiones==2 || repeticiones==1) && mostrarCambiar  "
+                    style="background: linear-gradient(to right, #2193b0, #6dd5ed);padding-top: 0;">
+                    <p>Clickee los dados que desea cambiar y luego confirme!</p>
+                    <div class="row">
+                        <div *ngFor="let dado of dadosJugadorUno" class="col" style="margin-left: 0; padding: 0;">
+                            <img (click)="obtenerDadoUno(dado,dadosJugadorUno.indexOf(dado))" class="imgBtn"
+                                style='height: 40px; width: 40px;' src="{{obtenerImg(dado)}}" alt="">
+                        </div>
+                    </div>
+                    <button class="btn btn-block" (click)="confirmarCambio()" style="margin-top: 10px;">Confirmar cambio
+                        de dados</button>
+                </div>
+                <button *ngIf="dadosJugadorUno[0] && contadorRondas<11 " class="btn btn-block"
+                    (click)="sumarPuntosUno(dadosJugadorUno)">Guardar y Avanzar</button>
+                <button *ngIf=" contadorRondas==11 " class="btn btn-block" (click)="finalizar()">Terminar Juego</button>
+            </div>
+            <!--ACA ESTA TODO LO DEL TURNO DEL JUGADOR DOS-->
+                <div *ngIf="(orden2==1 && contadorTiradas%2==1) || (orden2==2 && contadorTiradas%2==0)" class="col">
+                    <h2 *ngIf="contadorRondas<11">TURNO {{nombreDos}}</h2>
+                    <button class="btn btn-block" *ngIf="mostrarTirar && contadorRondas<11" (click)="tirarDadosDos()">TIRAR
+                        DADOS</button>
+                    <div class="card card-body" *ngIf="dadosJugadorDos[0] && contadorRondas<11"
+                        style="background: linear-gradient(to right, #f12711, #f5af19); padding-top: 0;">
+                        <h2>Sus Dados</h2>
+                        <div class="row">
+                            <div *ngFor="let dado of dadosJugadorDos" class="col" style="margin-left: 0; padding: 0;">
+                                <img style='height: 40px; width: 40px;' src="{{obtenerImg(dado)}}" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <button (click)="desplegarCambio()" *ngIf="dadosJugadorDos[0] && contadorRondas<11"
+                        class="btn btn-block">Cambiar Dados:
+                        {{repeticiones}}</button>
+                    <div class="card card-body"
+                        *ngIf="dadosJugadorDos[0] && (repeticiones==2 || repeticiones==1) && mostrarCambiar  "
+                        style="background: linear-gradient(to right, #f12711, #f5af19); padding-top: 0;">
+                        <p>Clickee los dados que desea cambiar y luego confirme!</p>
+                        <div class="row">
+                            <div *ngFor="let dado of dadosJugadorDos" class="col" style="margin-left: 0; padding: 0;">
+                                <img (click)="obtenerDadoDos(dado,dadosJugadorDos.indexOf(dado))" class="imgBtn"
+                                    style='height: 40px; width: 40px;' src="{{obtenerImg(dado)}}" alt="">
+                            </div>
+                        </div>
+                        <button class="btn btn-block" (click)="confirmarCambioDos()" style="margin-top: 10px;">Confirmar cambio
+                            de dados</button>
+                    </div>
+    
+                    
+                    <button *ngIf="dadosJugadorDos[0] && contadorRondas<11 " class="btn btn-block"
+                        (click)="sumarPuntosDos(dadosJugadorDos)">Guardar y Avanzar</button>
+                    <button *ngIf=" contadorRondas==11 " class="btn btn-block" (click)="finalizar()">Terminar Juego</button>
+                </div>
+              <!--ACA ESTA LA TABLA DE PUNTAJES-->
+            <div class="col">
+                <div class="card card-body" style="padding: 5px; background-color: rgba(255, 255, 255, .5);">
+                    <table class="table table-dark">
+                        <thead>
+                            <th style="border: 2px solid black; color: black;">Tabla Ptjs.</th>
+                            <td style="border: 2px solid black; background: linear-gradient(to right, #2193b0, #6dd5ed); color: black;">{{nombreUno}}</td>
+                            <td style="border: 2px solid black; background: linear-gradient(to right, #f12711, #f5af19); color: black; ">{{nombreDos}}</td>
+                        </thead>
+                        <tbody *ngFor="let valores of jugadorUno.restricciones">
+                            <tr style="height: 10px;">
+                                <th style="border: 2px solid black; padding: 0px; ">{{valores[0]}}</th>
+                                <td style="border: 2px solid black; padding: 0px; ">{{valores[1]}} pts</td>
+                                <td style="border: 2px solid black; padding: 0px; ">{{valores[2]}} pts</td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th style="border: 2px solid black; padding: 0px;" scope="row">Puntaje</th>
+                                <td style="border: 2px solid black; padding: 0px;">{{jugadorUno.sumatoriaJugadorUno}}
+                                    pts</td>
+                                <td style="border: 2px solid black; padding: 0px;">{{jugadorDos.sumatoriaJugadorDos}}
+                                    pts</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--ACA VAN LOS MENSAJES DE AMBOS PERSONAJES-->
+            <div *ngIf="mensaje != 'default'" class="card card-body"
+                    style="background: linear-gradient(to right, #2193b0, #6dd5ed);">
+                    <p><b>{{nombreUno}}: {{mensaje}}</b></p>
+            </div>
+            <div *ngIf="mensajeDos != 'default'" class="card card-body"
+                        style="background: linear-gradient(to right, #f12711, #f5af19);">
+                        <p><b>{{nombreDos}}: {{mensajeDos}}</b></p>
+                    </div>
+        </div><!--aca debe terminar-->
+    </div>
+    
+</div>
+<div *ngIf="FINAL" class="text-center" style="width: 100%;min-height: 100vh; position: absolute;  background:linear-gradient({{ganador()}});">
+    <div class="row justify-content-md-center" style="margin-top: 70px;">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <div class="card card-body" style="background-color: rgba(255, 255, 255, .5); padding-top: 0; ">
+                <h1 *ngIf="resultado.puntajeUno>resultado2.puntajeDos">GANO {{nombreUno}}</h1>
+                <h1 *ngIf="resultado.puntajeUno<resultado2.puntajeDos">GANO {{nombreDos}}</h1>
+                <h1 *ngIf="resultado.puntajeUno==resultado2.puntajeDos">empate??! EMPATARON!</h1>
+                <h4>PUNTAJE {{nombreUno}}: {{resultado.puntajeUno}} </h4>
+                <h4>PUNTAJE {{nombreDos}}: {{resultado2.puntajeDos}}</h4>
+                <button class="btn btn-outline-dark" routerLink="/home">Inicio</button>
+            </div>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
