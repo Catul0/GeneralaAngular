@@ -198,11 +198,11 @@ export class JvjComponent implements OnInit {
   }
   ganador(){
     if(this.resultado.puntajeUno>this.resultado2.puntajeDos){
-      this.msjj="to right, #2193b0, #6dd5ed"
+      this.msjj="linear-gradient(to right, #2193b0, #6dd5ed)"
     }else if(this.resultado.puntajeUno<this.resultado2.puntajeDos){
-      this.msjj="to right, #f12711, #f5af19"
+      this.msjj="linear-gradient(to right, #f12711, #f5af19)"
     }else{
-      this.msjj="to top, #1f4037, #99f2c8"
+      this.msjj="linear-gradient(to top, #1f4037, #99f2c8)"
     }
     return this.msjj;
   }

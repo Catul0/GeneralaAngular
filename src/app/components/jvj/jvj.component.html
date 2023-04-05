@@ -131,10 +131,8 @@
                         <tbody>
                             <tr>
                                 <th style="border: 2px solid black; padding: 0px;" scope="row">Puntaje</th>
-                                <td style="border: 2px solid black; padding: 0px;">{{jugadorUno.sumatoriaJugadorUno}}
-                                    pts</td>
-                                <td style="border: 2px solid black; padding: 0px;">{{jugadorDos.sumatoriaJugadorDos}}
-                                    pts</td>
+                                <td style="border: 2px solid black; padding: 0px;">{{jugadorUno.sumatoriaJugadorUno}} pts</td>
+                                <td style="border: 2px solid black; padding: 0px;">{{jugadorDos.sumatoriaJugadorDos}} pts</td>
                             </tr>
                         </tbody>
                     </table>
@@ -153,7 +151,7 @@
     </div>
     
 </div>
-<div *ngIf="FINAL" class="text-center" style="width: 100%;min-height: 100vh; position: absolute;  background:linear-gradient({{ganador()}});">
+<div *ngIf="FINAL" class="text-center" [ngStyle]=" {'background':ganador()}" style="width: 100%;min-height: 100vh; position: absolute;" >
     <div class="row justify-content-md-center" style="margin-top: 70px;">
         <div class="col-1"></div>
         <div class="col-10">
